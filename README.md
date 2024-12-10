@@ -66,6 +66,7 @@ Welcome to my game development portfolio! Here you’ll find a collection of gam
 > **Walking Simulator | Unreal Engine**
 - Lost in the heart of majestic mountains, you wander through breathtaking landscapes. A peaceful lake and a towering hill beckon you to uncover their mysteries.
 - **Repository:** [GitHub / EchoesOfThePeak](https://github.com/c1foZ/echoesofthepeak)
+
 ---
 
 
