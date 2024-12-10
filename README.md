@@ -48,7 +48,6 @@ Welcome to my game development portfolio! Here you’ll find a collection of gam
 
 ### 5. **Knight on the Edge**
 > **Platformer | Godot**
-
 - Take on the role of a brave knight in this fast-paced 2D platformer! Jump over deadly traps, dodge monstrous foes, and uncover hidden secrets as you race through perilous levels.
 - **Play Now:** [Knight on the Edge on itch.io](https://cifoz.itch.io/knight-on-the-edge)
 - **Repository:** [GitHub / KnightOnTheEdge](https://github.com/c1foZ/knightontheedge)
@@ -57,7 +56,6 @@ Welcome to my game development portfolio! Here you’ll find a collection of gam
 
 ### 6. **Nightborne**
 > **Dungeon Crawler | Phaser**
-
 - Nightborne is a 2D platformer set in a dark dungeon. Players fight waves of skeleton enemies, explore eerie corridors, and uncover secrets.
 - **Play Now:** [Nightborne on itch.io](https://cifoz.itch.io/nightborne)
 - **Repository:** [GitHub / Nightborne](https://github.com/c1foZ/nightborne)
@@ -66,7 +64,6 @@ Welcome to my game development portfolio! Here you’ll find a collection of gam
 
 ### 7. **Echoes of the Peak**
 > **Walking Simulator | Unreal Engine**
-
 - Lost in the heart of majestic mountains, you wander through breathtaking landscapes. A peaceful lake and a towering hill beckon you to uncover their mysteries.
 - **Repository:** [GitHub / EchoesOfThePeak](https://github.com/c1foZ/echoesofthepeak)
 ---
