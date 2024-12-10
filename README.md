@@ -13,9 +13,13 @@ Welcome to my game development portfolio! Here you’ll find a collection of gam
 
 ---
 
-> [!TIP]  
->  - Most of the games are playable in your browser. Don't forget to check them out on my 🎮 [itch.io](https://cifoz.itch.io/)!  
->  - For more details, screenshots, and source code, check out the repository for each project.
+
+| :point_up:    | Most of the games are playable in your browser. Don't forget to check them out on my 🎮 [itch.io](https://cifoz.itch.io/)!|
+|---------------|:----------------------------------------|
+
+| :point_up:    | For more details, screenshots, and source code, check out the repository for each project.|
+|---------------|:----------------------------------------|
+
 
 ---
 
