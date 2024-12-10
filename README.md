@@ -44,6 +44,8 @@ Welcome to my game development portfolio! Here you’ll find a collection of gam
 - A terminal-based Pacman game where you navigate a maze, collect dots, and avoid enemies.
 - **Repository:** [GitHub](https://github.com/c1foZ/pacman)
 
+---
+
 ### 5. **Knight on the Edge**
 > **Platformer | Godot**
 
