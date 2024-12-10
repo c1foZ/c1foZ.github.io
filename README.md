@@ -2,6 +2,9 @@
 
 Welcome to my game development portfolio! Here you’ll find a collection of games I’ve created, each showcasing my skills and passion for game design and programming. From 2D platformers to 3D obstacle courses, each project represents a step forward in my journey as a developer.
 
+- Most of the games are playable in your browser. Don't forget to check them out on my 🎮 [itch.io](https://cifoz.itch.io/)!
+- For more details, screenshots, and source code, check out the repository for each project.
+
 ---
 
 ## 🌟 Connect with Me
@@ -10,16 +13,6 @@ Welcome to my game development portfolio! Here you’ll find a collection of gam
 - 🎮 [itch.io](https://cifoz.itch.io/)
 - 💻 [GitHub](https://github.com/c1foZ)
 - 📧 [Email](mailto:tomife2@gmail.com)
-
----
-
-
-| :point_up:    | Most of the games are playable in your browser. Don't forget to check them out on my 🎮 [itch.io](https://cifoz.itch.io/)!|
-|---------------|:----------------------------------------|
-
-| :point_up:    | For more details, screenshots, and source code, check out the repository for each project.|
-|---------------|:----------------------------------------|
-
 
 ---
 
