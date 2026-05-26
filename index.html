@@ -84,70 +84,38 @@
               />
               <span class="player-avatar-label" aria-hidden="true">P1 // TOMAS_F</span>
             </div>
-            <div class="player-live" id="player-live" aria-live="polite">
-              <p class="live-line"><span class="live-key">STATUS:</span> <strong id="github-status">SYNCING...</strong></p>
-              <p class="live-line"><span class="live-key">CURRENTLY CODING:</span> <strong id="github-language">TypeScript</strong></p>
-              <p class="live-line"><span class="live-key">LAST COMMIT:</span> <strong id="github-last-commit">checking…</strong></p>
-              <p class="live-line"><span class="live-key">ACTIVITY:</span> <strong id="github-activity">loading event feed…</strong></p>
-              <p class="live-sync" id="github-sync">Loading live GitHub stats…</p>
-            </div>
-            <div class="game-bars" aria-label="Character stats" id="game-bars">
+            <div class="game-bars" aria-label="Character stats">
               <div class="bar-row">
                 <span class="bar-key hp">HP</span>
-                <div class="bar-track" id="hp-track" role="progressbar" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100" aria-label="Health 92/100">
+                <div class="bar-track" role="progressbar" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100" aria-label="Health 92/100">
                   <div class="bar-fill hp-fill" data-target="92"></div>
                 </div>
-                <span class="bar-val" id="hp-value">92 / 100</span>
+                <span class="bar-val">92 / 100</span>
               </div>
               <div class="bar-row">
                 <span class="bar-key mp">MP</span>
-                <div class="bar-track" id="mp-track" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="Mana 60/100">
+                <div class="bar-track" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="Mana 60/100">
                   <div class="bar-fill mp-fill" data-target="60"></div>
                 </div>
-                <span class="bar-val" id="mp-value">60 / 100</span>
+                <span class="bar-val">60 / 100</span>
               </div>
               <div class="bar-row">
                 <span class="bar-key xp">XP</span>
-                <div class="bar-track" id="xp-track" role="progressbar" aria-valuenow="74" aria-valuemin="0" aria-valuemax="120" aria-label="Experience points: 74 of 120">
+                <div class="bar-track" role="progressbar" aria-valuenow="74" aria-valuemin="0" aria-valuemax="100" aria-label="Experience 7450/10000">
                   <div class="bar-fill xp-fill" data-target="74"></div>
                 </div>
-                <span class="bar-val" id="xp-value">74 / 120</span>
+                <span class="bar-val">7450 / 10K</span>
               </div>
-            </div>
-            <div class="player-rank">
-              <span class="rank-level" id="player-level">LEVEL 27</span>
-              <span class="rank-title" id="player-title">FULLSTACK ENGINEER</span>
             </div>
             <div class="player-stats-summary" aria-label="Player summary">
               <div class="stat-card">
-                <span class="stat-value" id="repos-value" data-count-target="8">8</span>
-                <span class="stat-label">Public repos</span>
+                <span class="stat-value">8</span>
+                <span class="stat-label">Featured projects</span>
               </div>
               <div class="stat-card">
-                <span class="stat-value" id="followers-value" data-count-target="10">10</span>
-                <span class="stat-label">Followers</span>
+                <span class="stat-value">5+</span>
+                <span class="stat-label">Engines & tech stacks</span>
               </div>
-              <div class="stat-card">
-                <span class="stat-value" id="streak-value">--</span>
-                <span class="stat-label">Commit streak (days)</span>
-              </div>
-              <div class="stat-card">
-                <span class="stat-value" id="contrib-value" data-count-target="0">0</span>
-                <span class="stat-label">Recent commits</span>
-              </div>
-            </div>
-            <div class="player-loadout">
-              <div class="player-section-title">ACHIEVEMENTS</div>
-              <ul class="badge-list" id="badge-list" aria-label="Achievement badges"></ul>
-              <div class="player-section-title">EQUIPPED STACK</div>
-              <ul class="stack-list" aria-label="Equipped technology stack">
-                <li>⚔ Next.js</li>
-                <li>🛡 TypeScript</li>
-                <li>💎 TailwindCSS</li>
-                <li>🔋 Supabase</li>
-              </ul>
-              <div class="player-section-title">QUEST LOG</div>
-              <ul class="quest-log" id="quest-log" aria-label="Quest log"></ul>
             </div>
           </aside>
         </div>
@@ -632,323 +600,51 @@
         startGame();
       })();
 
-      /* ── Live GitHub player stats ─────────────────────────────── */
-      (() => {
-        const GITHUB_USER = "c1foZ";
-        const CACHE_KEY = "github-player-stats-cache-v1";
-        const CACHE_TTL_MS = 15 * 60 * 1000;
-        const LEGENDARY_LEVEL_THRESHOLD = 30;
-        const XP_PER_REPO = 6;
-        const XP_PER_YEAR = 24;
-        const XP_PER_PROJECT = 4;
-        const XP_PER_LEVEL = 120;
-        const HP_BASE = 70;
-        const HP_PER_FOLLOWER = 1.5;
-        const HP_PER_STREAK_DAY = 2;
-        const HP_STREAK_BONUS_MAX = 12;
-        const MP_BASE = 45;
-        const MP_PER_YEAR = 5;
-        const MP_PER_TOP_LANGUAGE_REPO = 7;
-        const fallbackStats = {
-          repos: 8,
-          followers: 10,
-          recentCommits: 24,
-          commitStreak: 7,
-          topLanguage: "TypeScript",
-          status: "ONLINE",
-          activity: "Building interactive portfolio updates",
-          lastCommitLabel: "recently",
-          totalStars: 18,
-          level: 27,
-          hp: 92,
-          mp: 60,
-          xp: 74,
-          xpCurrent: 74,
-          xpLabel: "74 / 120",
-          badges: ["Open Source Contributor", "AI Explorer", "React Master", "100+ Recent Commits"],
-          quests: [
-            { label: "Build portfolio", done: true },
-            { label: "Launch SaaS", done: false },
-            { label: "Reach 500 GitHub stars", done: false }
-          ]
+      /* ── Stat counter animation ───────────────────────────────── */
+      const animateCounter = (el) => {
+        const raw    = el.textContent.trim();
+        const hasPlus = raw.endsWith("+");
+        const target = parseInt(raw, 10);
+        if (isNaN(target)) return;
+        let start = null;
+        const duration = 1200;
+        const step = (ts) => {
+          if (!start) start = ts;
+          const progress = Math.min((ts - start) / duration, 1);
+          const eased    = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.floor(eased * target) + (hasPlus ? "+" : "");
+          if (progress < 1) requestAnimationFrame(step);
         };
+        requestAnimationFrame(step);
+      };
 
-        const els = {
-          status: document.getElementById("github-status"),
-          language: document.getElementById("github-language"),
-          lastCommit: document.getElementById("github-last-commit"),
-          activity: document.getElementById("github-activity"),
-          sync: document.getElementById("github-sync"),
-          repos: document.getElementById("repos-value"),
-          followers: document.getElementById("followers-value"),
-          streak: document.getElementById("streak-value"),
-          commits: document.getElementById("contrib-value"),
-          level: document.getElementById("player-level"),
-          title: document.getElementById("player-title"),
-          badges: document.getElementById("badge-list"),
-          quests: document.getElementById("quest-log"),
-          bars: document.getElementById("game-bars"),
-          hpTrack: document.getElementById("hp-track"),
-          mpTrack: document.getElementById("mp-track"),
-          xpTrack: document.getElementById("xp-track"),
-          hpVal: document.getElementById("hp-value"),
-          mpVal: document.getElementById("mp-value"),
-          xpVal: document.getElementById("xp-value")
-        };
-
-        const asUtcDay = (dateInput) => {
-          const date = new Date(dateInput);
-          return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}-${String(date.getUTCDate()).padStart(2, "0")}`;
-        };
-
-        const toRelativeTime = (dateInput) => {
-          const date = new Date(dateInput);
-          if (Number.isNaN(date.getTime())) return "unknown";
-          const diffMs = Date.now() - date.getTime();
-          const diffMinutes = Math.max(1, Math.floor(diffMs / 60000));
-          if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes === 1 ? "" : "s"} ago`;
-          const diffHours = Math.floor(diffMinutes / 60);
-          if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
-          const diffDays = Math.floor(diffHours / 24);
-          return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
-        };
-
-        const countByLanguage = (repos) => {
-          const map = new Map();
-          repos.forEach((repo) => {
-            if (!repo || !repo.language) return;
-            map.set(repo.language, (map.get(repo.language) || 0) + 1);
-          });
-          let topLanguage = "JavaScript";
-          let topCount = 0;
-          map.forEach((count, language) => {
-            if (count > topCount) {
-              topCount = count;
-              topLanguage = language;
-            }
-          });
-          return { topLanguage, topCount };
-        };
-
-        const computeCommitStreak = (events) => {
-          const pushDays = [...new Set(events
-            .filter((event) => event.type === "PushEvent")
-            .map((event) => asUtcDay(event.created_at)))].sort().reverse();
-          if (pushDays.length === 0) return 0;
-          let streak = 1;
-          let cursor = new Date(`${pushDays[0]}T00:00:00Z`);
-          for (let i = 1; i < pushDays.length; i += 1) {
-            const previousDay = new Date(cursor);
-            previousDay.setUTCDate(previousDay.getUTCDate() - 1);
-            if (pushDays[i] === asUtcDay(previousDay)) {
-              streak += 1;
-              cursor = previousDay;
-            } else {
-              break;
-            }
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll(".stat-value").forEach(animateCounter);
+            observer.unobserve(entry.target);
           }
-          return streak;
-        };
+        });
+      }, { threshold: 0.4 });
 
-        const mapEventToActivity = (event) => {
-          if (!event) return "No recent public activity";
-          const repoName = event.repo?.name || "portfolio";
-          if (event.type === "PushEvent") return `Pushing commits to ${repoName}`;
-          if (event.type === "WatchEvent") return `Starring projects like ${repoName}`;
-          if (event.type === "CreateEvent") return `Creating content in ${repoName}`;
-          return `Active on ${repoName}`;
-        };
+      document.querySelectorAll(".hero-panel").forEach((el) => observer.observe(el));
 
-        const setBar = (track, valueEl, value, labelText, valueText, ariaNow = null, ariaMax = 100) => {
-          if (!track) return;
-          const fill = track.querySelector(".bar-fill");
-          if (!fill) return;
-          const target = Math.max(0, Math.min(100, Math.round(value)));
-          const accessibleNow = ariaNow === null || ariaNow === undefined ? target : ariaNow;
-          track.setAttribute("aria-valuenow", String(accessibleNow));
-          track.setAttribute("aria-valuemax", String(ariaMax));
-          track.setAttribute("aria-label", labelText);
-          fill.dataset.target = String(target);
-          requestAnimationFrame(() => {
-            fill.style.width = `${target}%`;
-          });
-          if (valueEl) valueEl.textContent = valueText;
-        };
-
-        const animateCount = (el, targetValue) => {
-          if (!el) return;
-          const target = Math.max(0, Math.floor(targetValue));
-          const startValue = Number.parseInt(el.textContent, 10) || 0;
-          let start = null;
-          const duration = 900;
-          const step = (ts) => {
-            if (!start) start = ts;
-            const progress = Math.min((ts - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            el.textContent = String(Math.round(startValue + (target - startValue) * eased));
-            if (progress < 1) requestAnimationFrame(step);
-          };
-          requestAnimationFrame(step);
-        };
-
-        const setBadgeList = (badges) => {
-          if (!els.badges) return;
-          els.badges.innerHTML = "";
-          badges.forEach((badge) => {
-            const item = document.createElement("li");
-            item.textContent = badge;
-            els.badges.appendChild(item);
-          });
-        };
-
-        const setQuestLog = (quests) => {
-          if (!els.quests) return;
-          els.quests.innerHTML = "";
-          quests.forEach((quest) => {
-            const item = document.createElement("li");
-            item.textContent = `[${quest.done ? "✓" : " "}] ${quest.label}`;
-            if (quest.done) item.classList.add("done");
-            els.quests.appendChild(item);
-          });
-        };
-
-        const renderStats = (stats, syncMessage, syncClass = "") => {
-          if (els.status) els.status.textContent = stats.status;
-          if (els.language) els.language.textContent = stats.topLanguage;
-          if (els.lastCommit) els.lastCommit.textContent = stats.lastCommitLabel;
-          if (els.activity) els.activity.textContent = stats.activity;
-          if (els.sync) {
-            els.sync.textContent = syncMessage;
-            els.sync.className = `live-sync ${syncClass}`.trim();
-          }
-          animateCount(els.repos, stats.repos);
-          animateCount(els.followers, stats.followers);
-          animateCount(els.commits, stats.recentCommits);
-          if (els.streak) els.streak.textContent = String(stats.commitStreak);
-          if (els.level) els.level.textContent = `LEVEL ${stats.level}`;
-          if (els.title) els.title.textContent = stats.level >= LEGENDARY_LEVEL_THRESHOLD ? "LEGENDARY FULLSTACK ENGINEER" : "FULLSTACK ENGINEER";
-          setBar(els.hpTrack, els.hpVal, stats.hp, `Health ${stats.hp}/100`, `${stats.hp} / 100`);
-          setBar(els.mpTrack, els.mpVal, stats.mp, `Mana ${stats.mp}/100`, `${stats.mp} / 100`);
-          setBar(els.xpTrack, els.xpVal, stats.xp, `Experience points: ${stats.xpCurrent} of ${XP_PER_LEVEL}`, stats.xpLabel, stats.xpCurrent, XP_PER_LEVEL);
-          setBadgeList(stats.badges);
-          setQuestLog(stats.quests);
-        };
-
-        const getCachedStats = () => {
-          try {
-            const raw = localStorage.getItem(CACHE_KEY);
-            if (!raw) return null;
-            const parsed = JSON.parse(raw);
-            if (!parsed.timestamp || !parsed.payload) return null;
-            if (Date.now() - parsed.timestamp > CACHE_TTL_MS) return null;
-            return parsed.payload;
-          } catch {
-            return null;
-          }
-        };
-
-        const saveCachedStats = (payload) => {
-          try {
-            localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), payload }));
-          } catch {
-            /* no-op if storage unavailable */
-          }
-        };
-
-        const fetchGithubStats = async () => {
-          const headers = { Accept: "application/vnd.github+json" };
-          const [profileRes, repoRes, eventRes] = await Promise.all([
-            fetch(`https://api.github.com/users/${GITHUB_USER}`, { headers }),
-            fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`, { headers }),
-            fetch(`https://api.github.com/users/${GITHUB_USER}/events/public?per_page=100`, { headers })
-          ]);
-          if (!profileRes.ok || !repoRes.ok || !eventRes.ok) {
-            throw new Error("GitHub API unavailable");
-          }
-          const [profile, repos, events] = await Promise.all([profileRes.json(), repoRes.json(), eventRes.json()]);
-          const { topLanguage, topCount } = countByLanguage(repos);
-          const commitEvents = events.filter((event) => event.type === "PushEvent");
-          const recentCommits = commitEvents.reduce((total, event) => total + (event.payload?.commits?.length || 0), 0);
-          const latestPush = commitEvents[0] || events[0];
-          const commitStreak = computeCommitStreak(events);
-          const profileCreatedAt = new Date(profile.created_at);
-          const profileStartYear = Number.isNaN(profileCreatedAt.getTime()) ? new Date().getFullYear() : profileCreatedAt.getFullYear();
-          const yearsExp = Math.max(1, new Date().getFullYear() - profileStartYear);
-          const completedProjects = repos.filter((repo) => !repo.fork).length;
-          const totalStars = repos.reduce((total, repo) => total + (repo.stargazers_count || 0), 0);
-          const xpPool = profile.public_repos * XP_PER_REPO + recentCommits + yearsExp * XP_PER_YEAR + completedProjects * XP_PER_PROJECT;
-          const level = Math.max(1, Math.floor(xpPool / XP_PER_LEVEL) + 1);
-          const xpCurrent = xpPool % XP_PER_LEVEL;
-          const xp = Math.round((xpCurrent / XP_PER_LEVEL) * 100);
-          const hpStreakBonus = Math.min(commitStreak * HP_PER_STREAK_DAY, HP_STREAK_BONUS_MAX);
-          const hp = Math.min(100, HP_BASE + Math.round(profile.followers * HP_PER_FOLLOWER) + hpStreakBonus);
-          const mp = Math.min(100, MP_BASE + yearsExp * MP_PER_YEAR + topCount * MP_PER_TOP_LANGUAGE_REPO);
-          const status = latestPush && (Date.now() - new Date(latestPush.created_at).getTime()) < 24 * 60 * 60 * 1000 ? "ONLINE" : "IDLE";
-          return {
-            repos: profile.public_repos,
-            followers: profile.followers,
-            recentCommits,
-            commitStreak,
-            topLanguage,
-            status,
-            activity: mapEventToActivity(events[0]),
-            lastCommitLabel: latestPush ? toRelativeTime(latestPush.created_at) : "unknown",
-            totalStars,
-            level,
-            hp,
-            mp,
-            xp,
-            xpCurrent,
-            xpLabel: `${xpCurrent} / ${XP_PER_LEVEL}`,
-            badges: [
-              "Open Source Contributor",
-              topLanguage === "TypeScript" ? "TypeScript Specialist" : `${topLanguage} Specialist`,
-              recentCommits >= 100 ? "100+ Recent Commits" : "Consistent Builder",
-              profile.public_repos >= 20 ? "Repo Hoarder" : "Project Crafter"
-            ],
-            quests: [
-              { label: "Build portfolio", done: true },
-              { label: "Launch SaaS", done: false },
-              { label: "Reach 500 GitHub stars", done: totalStars >= 500 }
-            ]
-          };
-        };
-
-        const applyInitialBarAnimation = () => {
-          if (!els.bars) return;
-          const barObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-              if (!entry.isIntersecting) return;
-              entry.target.querySelectorAll(".bar-fill[data-target]").forEach((fill) => {
-                requestAnimationFrame(() => {
-                  fill.style.width = `${fill.dataset.target || 0}%`;
-                });
+      /* ── Game bar fill animation ──────────────────────────────── */
+      const barObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll(".bar-fill[data-target]").forEach((fill) => {
+              const target = fill.dataset.target;
+              requestAnimationFrame(() => {
+                fill.style.width = target + "%";
               });
-              barObserver.unobserve(entry.target);
             });
-          }, { threshold: 0.35 });
-          barObserver.observe(els.bars);
-        };
+            barObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
 
-        applyInitialBarAnimation();
-
-        const cached = getCachedStats();
-        if (cached) {
-          renderStats(cached, "Synced from cache", "is-ok");
-        } else {
-          renderStats(fallbackStats, "Using baseline profile while syncing…");
-        }
-
-        fetchGithubStats()
-          .then((liveStats) => {
-            saveCachedStats(liveStats);
-            renderStats(liveStats, "Live GitHub data connected", "is-ok");
-          })
-          .catch(() => {
-            const fallback = cached || fallbackStats;
-            renderStats(fallback, "GitHub API unavailable — showing fallback stats", "is-error");
-          });
-      })();
+      document.querySelectorAll(".game-bars").forEach((el) => barObserver.observe(el));
 
       /* ── Scroll-driven card entrance ─────────────────────────── */
       const cardObserver = new IntersectionObserver((entries) => {
