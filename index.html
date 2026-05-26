@@ -108,10 +108,10 @@
               </div>
               <div class="bar-row">
                 <span class="bar-key xp">XP</span>
-                <div class="bar-track" id="xp-track" role="progressbar" aria-valuenow="74" aria-valuemin="0" aria-valuemax="100" aria-label="Experience 74/100">
+                <div class="bar-track" id="xp-track" role="progressbar" aria-valuenow="74" aria-valuemin="0" aria-valuemax="120" aria-label="Experience points: 74 of 120">
                   <div class="bar-fill xp-fill" data-target="74"></div>
                 </div>
-                <span class="bar-val" id="xp-value">74 / 100</span>
+                <span class="bar-val" id="xp-value">74 / 120</span>
               </div>
             </div>
             <div class="player-rank">
@@ -637,7 +637,18 @@
         const GITHUB_USER = "c1foZ";
         const CACHE_KEY = "github-player-stats-cache-v1";
         const CACHE_TTL_MS = 15 * 60 * 1000;
-        const profileStartYear = 2019;
+        const LEGENDARY_LEVEL_THRESHOLD = 30;
+        const XP_PER_REPO = 6;
+        const XP_PER_YEAR = 24;
+        const XP_PER_PROJECT = 4;
+        const XP_PER_LEVEL = 120;
+        const HP_BASE = 70;
+        const HP_PER_FOLLOWER = 1.5;
+        const HP_PER_STREAK_DAY = 2;
+        const HP_STREAK_BONUS_MAX = 12;
+        const MP_BASE = 45;
+        const MP_PER_YEAR = 5;
+        const MP_PER_TOP_LANGUAGE_REPO = 7;
         const fallbackStats = {
           repos: 8,
           followers: 10,
@@ -652,8 +663,9 @@
           hp: 92,
           mp: 60,
           xp: 74,
-          xpLabel: "74 / 100",
-          badges: ["Open Source Contributor", "AI Explorer", "React Master", "100+ Commit Streak"],
+          xpCurrent: 74,
+          xpLabel: "74 / 120",
+          badges: ["Open Source Contributor", "AI Explorer", "React Master", "100+ Recent Commits"],
           quests: [
             { label: "Build portfolio", done: true },
             { label: "Launch SaaS", done: false },
@@ -747,12 +759,14 @@
           return `Active on ${repoName}`;
         };
 
-        const setBar = (track, valueEl, value, labelText, valueText) => {
+        const setBar = (track, valueEl, value, labelText, valueText, ariaNow = null, ariaMax = 100) => {
           if (!track) return;
           const fill = track.querySelector(".bar-fill");
           if (!fill) return;
           const target = Math.max(0, Math.min(100, Math.round(value)));
-          track.setAttribute("aria-valuenow", String(target));
+          const accessibleNow = ariaNow === null || ariaNow === undefined ? target : ariaNow;
+          track.setAttribute("aria-valuenow", String(accessibleNow));
+          track.setAttribute("aria-valuemax", String(ariaMax));
           track.setAttribute("aria-label", labelText);
           fill.dataset.target = String(target);
           requestAnimationFrame(() => {
@@ -811,11 +825,11 @@
           animateCount(els.followers, stats.followers);
           animateCount(els.commits, stats.recentCommits);
           if (els.streak) els.streak.textContent = String(stats.commitStreak);
-          if (els.level) els.level.textContent = `LEVEL ${String(stats.level).padStart(2, "0")}`;
-          if (els.title) els.title.textContent = stats.level >= 30 ? "LEGENDARY FULLSTACK ENGINEER" : "FULLSTACK ENGINEER";
+          if (els.level) els.level.textContent = `LEVEL ${stats.level}`;
+          if (els.title) els.title.textContent = stats.level >= LEGENDARY_LEVEL_THRESHOLD ? "LEGENDARY FULLSTACK ENGINEER" : "FULLSTACK ENGINEER";
           setBar(els.hpTrack, els.hpVal, stats.hp, `Health ${stats.hp}/100`, `${stats.hp} / 100`);
           setBar(els.mpTrack, els.mpVal, stats.mp, `Mana ${stats.mp}/100`, `${stats.mp} / 100`);
-          setBar(els.xpTrack, els.xpVal, stats.xp, `Experience ${stats.xpLabel}`, stats.xpLabel);
+          setBar(els.xpTrack, els.xpVal, stats.xp, `Experience points: ${stats.xpCurrent} of ${XP_PER_LEVEL}`, stats.xpLabel, stats.xpCurrent, XP_PER_LEVEL);
           setBadgeList(stats.badges);
           setQuestLog(stats.quests);
         };
@@ -857,15 +871,18 @@
           const recentCommits = commitEvents.reduce((total, event) => total + (event.payload?.commits?.length || 0), 0);
           const latestPush = commitEvents[0] || events[0];
           const commitStreak = computeCommitStreak(events);
+          const profileCreatedAt = new Date(profile.created_at);
+          const profileStartYear = Number.isNaN(profileCreatedAt.getTime()) ? new Date().getFullYear() : profileCreatedAt.getFullYear();
           const yearsExp = Math.max(1, new Date().getFullYear() - profileStartYear);
           const completedProjects = repos.filter((repo) => !repo.fork).length;
           const totalStars = repos.reduce((total, repo) => total + (repo.stargazers_count || 0), 0);
-          const xpPool = profile.public_repos * 6 + recentCommits + yearsExp * 24 + completedProjects * 4;
-          const level = Math.max(1, Math.floor(xpPool / 120) + 1);
-          const xpCurrent = xpPool % 120;
-          const xp = Math.round((xpCurrent / 120) * 100);
-          const hp = Math.min(100, 70 + Math.round(profile.followers * 1.5) + Math.min(commitStreak * 2, 12));
-          const mp = Math.min(100, 45 + yearsExp * 5 + topCount * 7);
+          const xpPool = profile.public_repos * XP_PER_REPO + recentCommits + yearsExp * XP_PER_YEAR + completedProjects * XP_PER_PROJECT;
+          const level = Math.max(1, Math.floor(xpPool / XP_PER_LEVEL) + 1);
+          const xpCurrent = xpPool % XP_PER_LEVEL;
+          const xp = Math.round((xpCurrent / XP_PER_LEVEL) * 100);
+          const hpStreakBonus = Math.min(commitStreak * HP_PER_STREAK_DAY, HP_STREAK_BONUS_MAX);
+          const hp = Math.min(100, HP_BASE + Math.round(profile.followers * HP_PER_FOLLOWER) + hpStreakBonus);
+          const mp = Math.min(100, MP_BASE + yearsExp * MP_PER_YEAR + topCount * MP_PER_TOP_LANGUAGE_REPO);
           const status = latestPush && (Date.now() - new Date(latestPush.created_at).getTime()) < 24 * 60 * 60 * 1000 ? "ONLINE" : "IDLE";
           return {
             repos: profile.public_repos,
@@ -881,11 +898,12 @@
             hp,
             mp,
             xp,
-            xpLabel: `${xpCurrent} / 120`,
+            xpCurrent,
+            xpLabel: `${xpCurrent} / ${XP_PER_LEVEL}`,
             badges: [
               "Open Source Contributor",
               topLanguage === "TypeScript" ? "TypeScript Specialist" : `${topLanguage} Specialist`,
-              recentCommits >= 100 ? "100+ Commit Streak" : "Consistent Builder",
+              recentCommits >= 100 ? "100+ Recent Commits" : "Consistent Builder",
               profile.public_repos >= 20 ? "Repo Hoarder" : "Project Crafter"
             ],
             quests: [
