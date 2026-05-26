@@ -3,41 +3,169 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My AI Automation Lab</title>
+    <title>AI Automation Game Hub</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="hero">
-      <div class="container">
-        <h1>My AI Automation Lab</h1>
-        <p>Experiments and projects focused on practical AI automation.</p>
+    <div class="bg-glow bg-glow-a" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow-b" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="#home">AI Automation Lab</a>
+        <nav aria-label="Primary navigation">
+          <ul class="nav-links">
+            <li><a href="#games">Games</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
       </div>
     </header>
 
-    <main class="container">
-      <section id="about" class="card">
-        <h2>About</h2>
-        <p>
-          This lab is a space to explore ideas, build automations, and share
-          lightweight AI experiments.
-        </p>
+    <main id="home">
+      <section class="hero section">
+        <div class="container hero-inner">
+          <p class="eyebrow">Portfolio + Game Hub</p>
+          <h1>Interactive AI experiments with modern, playable prototypes.</h1>
+          <p class="hero-copy">
+            Explore featured games, automation demos, and practical projects built
+            to test new AI-assisted workflows.
+          </p>
+          <a class="btn btn-primary" href="#games">Explore Featured Games</a>
+        </div>
       </section>
 
-      <section id="projects" class="card">
-        <h2>Projects</h2>
-        <ul>
-          <li>Prompt workflow prototypes</li>
-          <li>Automation playbooks</li>
-          <li>Small practical AI tools</li>
-        </ul>
+      <section id="games" class="section">
+        <div class="container">
+          <div class="section-heading">
+            <h2>Featured Games</h2>
+            <p>Drop-in card layout so new games can be added quickly.</p>
+          </div>
+          <div class="card-grid">
+            <article class="hub-card">
+              <img
+                class="card-thumb"
+                src="assets/automation-arena.svg"
+                alt="Automation Arena thumbnail"
+              />
+              <div class="card-content">
+                <h3>Automation Arena</h3>
+                <p>Plan and chain automation actions to beat timed objectives.</p>
+                <ul class="tag-list" aria-label="Automation Arena tags">
+                  <li>Strategy</li>
+                  <li>AI</li>
+                  <li>Browser</li>
+                </ul>
+                <a class="btn" href="#" aria-label="Play Automation Arena">Play</a>
+              </div>
+            </article>
+
+            <article class="hub-card">
+              <img
+                class="card-thumb"
+                src="assets/prompt-runner.svg"
+                alt="Prompt Runner thumbnail"
+              />
+              <div class="card-content">
+                <h3>Prompt Runner</h3>
+                <p>Race through puzzle prompts with fast decision checkpoints.</p>
+                <ul class="tag-list" aria-label="Prompt Runner tags">
+                  <li>Puzzle</li>
+                  <li>Prompting</li>
+                  <li>Experimental</li>
+                </ul>
+                <a class="btn" href="#" aria-label="Play Prompt Runner">Play</a>
+              </div>
+            </article>
+
+            <article class="hub-card">
+              <img
+                class="card-thumb"
+                src="assets/agent-ops-sim.svg"
+                alt="Agent Ops Sim thumbnail"
+              />
+              <div class="card-content">
+                <h3>Agent Ops Sim</h3>
+                <p>Manage virtual agents and optimize throughput under pressure.</p>
+                <ul class="tag-list" aria-label="Agent Ops Sim tags">
+                  <li>Simulation</li>
+                  <li>Ops</li>
+                  <li>Management</li>
+                </ul>
+                <a class="btn" href="#" aria-label="Play Agent Ops Sim">Play</a>
+              </div>
+            </article>
+          </div>
+        </div>
       </section>
 
-      <section id="contact" class="card">
-        <h2>Contact</h2>
-        <p>
-          Reach out via GitHub by opening an issue or discussion in this
-          repository.
-        </p>
+      <section id="projects" class="section">
+        <div class="container">
+          <div class="section-heading">
+            <h2>Projects</h2>
+            <p>Recent tools and experiments from the lab.</p>
+          </div>
+          <div class="card-grid">
+            <article class="hub-card">
+              <img
+                class="card-thumb"
+                src="assets/workflow-composer.svg"
+                alt="Workflow Composer project thumbnail"
+              />
+              <div class="card-content">
+                <h3>Workflow Composer</h3>
+                <p>Prototype toolkit for chaining reusable prompt workflows.</p>
+                <ul class="tag-list" aria-label="Workflow Composer tags">
+                  <li>Tooling</li>
+                  <li>Automation</li>
+                  <li>Open Source</li>
+                </ul>
+                <a class="btn" href="#" aria-label="View Workflow Composer">View</a>
+              </div>
+            </article>
+
+            <article class="hub-card">
+              <img
+                class="card-thumb"
+                src="assets/agent-playbooks.svg"
+                alt="Agent Playbooks project thumbnail"
+              />
+              <div class="card-content">
+                <h3>Agent Playbooks</h3>
+                <p>Reference collection of practical AI-assisted operations.</p>
+                <ul class="tag-list" aria-label="Agent Playbooks tags">
+                  <li>Documentation</li>
+                  <li>Playbooks</li>
+                  <li>Ops</li>
+                </ul>
+                <a class="btn" href="#" aria-label="View Agent Playbooks">View</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="container panel">
+          <h2>About</h2>
+          <p>
+            This hub showcases game-like AI experiments and practical projects
+            focused on automation, interaction design, and rapid prototyping.
+          </p>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="container panel">
+          <h2>Contact & Links</h2>
+          <p>
+            Follow updates and reach out via
+            <a href="https://github.com/c1foZ">GitHub</a> or open an issue in this
+            repository.
+          </p>
+        </div>
       </section>
     </main>
   </body>
