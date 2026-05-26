@@ -592,6 +592,7 @@ main {
   display: grid;
   gap: 1rem;
   align-content: start;
+  justify-items: center;
   text-align: center;
 }
 
@@ -626,6 +627,7 @@ main {
 }
 
 .stat-card {
+  width: 100%;
   padding: 1rem 1.2rem;
   border-radius: 0;
   background: rgba(0, 229, 255, 0.05);
@@ -670,6 +672,13 @@ main {
   color: var(--muted);
   font-size: 0.85rem;
   letter-spacing: 0.04em;
+}
+
+.player-stats-summary {
+  display: grid;
+  gap: 0.7rem;
+  width: min(100%, 22rem);
+  margin-inline: auto;
 }
 
 /* ─── Section headings ───────────────────────────────────────────── */
@@ -1062,6 +1071,7 @@ main {
   grid-template-columns: 1.6rem 1fr 4.2rem;
   align-items: center;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .bar-key {
@@ -1084,11 +1094,22 @@ main {
   position: relative;
 }
 
+.bar-track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.28) 50%, transparent 100%);
+  transform: translateX(-100%);
+  animation: stat-scan 2.2s linear infinite;
+  pointer-events: none;
+}
+
 .bar-fill {
   height: 100%;
   border-radius: 1px;
   transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
   width: 0%;
+  animation: stat-fill-pulse 2.2s ease-in-out infinite;
 }
 
 .hp-fill {
@@ -1112,6 +1133,31 @@ main {
   color: var(--muted);
   text-align: right;
   white-space: nowrap;
+  animation: stat-text-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes stat-scan {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes stat-fill-pulse {
+  0%, 100% {
+    filter: brightness(0.95);
+  }
+  50% {
+    filter: brightness(1.2);
+  }
+}
+
+@keyframes stat-text-pulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* ─── Game HUD — Level Badge on section headings ─────────────────── */
