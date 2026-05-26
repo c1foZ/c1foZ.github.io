@@ -10,7 +10,7 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;500;700;900&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -19,16 +19,22 @@
     <div class="cursor-ring" aria-hidden="true"></div>
 
     <div class="background">
+      <canvas id="pixel-canvas" aria-hidden="true"></canvas>
       <div class="aurora aurora-a" aria-hidden="true"></div>
       <div class="aurora aurora-b" aria-hidden="true"></div>
       <div class="aurora aurora-c" aria-hidden="true"></div>
       <div class="grid-overlay" aria-hidden="true"></div>
       <div class="scanlines" aria-hidden="true"></div>
+      <div class="vignette" aria-hidden="true"></div>
     </div>
 
     <header class="site-header">
       <div class="container nav-wrap">
         <a class="brand" href="#home">Tomáš Ferenčík</a>
+        <div class="nav-player" aria-label="Player 1 online">
+          <span class="nav-player-dot" aria-hidden="true"></span>
+          P1 ONLINE
+        </div>
         <nav aria-label="Primary navigation">
           <ul class="nav-links">
             <li><a href="#projects">Projects</a></li>
@@ -59,6 +65,7 @@
           </div>
 
           <aside class="hero-panel" aria-label="Portfolio highlights">
+            <div class="hud-header">// PLAYER_STATS</div>
             <div class="stat-card">
               <span class="stat-value">8</span>
               <span class="stat-label">Featured projects</span>
@@ -67,8 +74,31 @@
               <span class="stat-value">5+</span>
               <span class="stat-label">Engines & tech stacks</span>
             </div>
+            <div class="game-bars" aria-label="Character stats">
+              <div class="bar-row">
+                <span class="bar-key hp">HP</span>
+                <div class="bar-track" role="progressbar" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100" aria-label="Health 92/100">
+                  <div class="bar-fill hp-fill" data-target="92"></div>
+                </div>
+                <span class="bar-val">92 / 100</span>
+              </div>
+              <div class="bar-row">
+                <span class="bar-key xp">XP</span>
+                <div class="bar-track" role="progressbar" aria-valuenow="74" aria-valuemin="0" aria-valuemax="100" aria-label="Experience 7450/10000">
+                  <div class="bar-fill xp-fill" data-target="74"></div>
+                </div>
+                <span class="bar-val">7450 / 10K</span>
+              </div>
+              <div class="bar-row">
+                <span class="bar-key mp">MP</span>
+                <div class="bar-track" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="Mana 60/100">
+                  <div class="bar-fill mp-fill" data-target="60"></div>
+                </div>
+                <span class="bar-val">60 / 100</span>
+              </div>
+            </div>
             <p class="hero-note">
-              Most of the games are playable in your browser. Don’t forget to
+              Most of the games are playable in your browser. Don't forget to
               check them out on itch.io for more details and screenshots.
             </p>
           </aside>
@@ -78,6 +108,7 @@
       <section id="contact" class="section">
         <div class="container">
           <div class="section-heading">
+            <div class="level-badge">LEVEL 01</div>
             <h2>Connect with Me</h2>
             <p>Find my work, releases, and contact details across the web.</p>
           </div>
@@ -125,8 +156,9 @@
       <section id="projects" class="section">
         <div class="container">
           <div class="section-heading">
+            <div class="level-badge">LEVEL 02</div>
             <h2>Featured Projects</h2>
-            <p>Modern game cards generated from reusable project data.</p>
+            <p>Select a game to begin your adventure.</p>
           </div>
           <div class="project-grid" id="project-grid" aria-live="polite"></div>
         </div>
@@ -136,6 +168,7 @@
         <div class="container">
           <div class="about-panel">
             <div>
+              <div class="level-badge">LEVEL 03</div>
               <p class="eyebrow">About the portfolio</p>
               <h2>Building interactive experiences across genres.</h2>
             </div>
@@ -148,6 +181,9 @@
         </div>
       </section>
     </main>
+
+    <!-- Achievement toast container (must be before <script> for DOM access) -->
+    <div class="achievement-wrap" id="achievement-wrap" aria-live="polite" aria-atomic="false"></div>
 
     <script>
       /* ── Project data ─────────────────────────────────────────── */
@@ -233,7 +269,7 @@
       /* ── Project card renderer ────────────────────────────────── */
       const projectGrid = document.getElementById("project-grid");
 
-      const createProjectCard = (project) => {
+      const createProjectCard = (project, index) => {
         const card = document.createElement("article");
         card.className = "project-card";
 
@@ -260,6 +296,13 @@
           thumbCaption.textContent = "Screenshot placeholder";
           thumbnail.appendChild(thumbCaption);
         }
+
+        /* Level badge on every card thumbnail */
+        const levelBadge = document.createElement("span");
+        levelBadge.className = "card-level";
+        levelBadge.setAttribute("aria-label", `Level ${String(index + 1).padStart(2, "0")}`);
+        levelBadge.textContent = `LV.${String(index + 1).padStart(2, "0")}`;
+        thumbnail.appendChild(levelBadge);
 
         const content = document.createElement("div");
         content.className = "project-content";
@@ -306,8 +349,8 @@
         return card;
       };
 
-      projects.forEach((project) => {
-        projectGrid.appendChild(createProjectCard(project));
+      projects.forEach((project, i) => {
+        projectGrid.appendChild(createProjectCard(project, i));
       });
 
       /* ── Custom cursor ────────────────────────────────────────── */
@@ -386,6 +429,23 @@
 
       document.querySelectorAll(".hero-panel").forEach((el) => observer.observe(el));
 
+      /* ── Game bar fill animation ──────────────────────────────── */
+      const barObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll(".bar-fill[data-target]").forEach((fill) => {
+              const target = fill.dataset.target;
+              requestAnimationFrame(() => {
+                fill.style.width = target + "%";
+              });
+            });
+            barObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      document.querySelectorAll(".game-bars").forEach((el) => barObserver.observe(el));
+
       /* ── Scroll-driven card entrance ─────────────────────────── */
       const cardObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -400,6 +460,133 @@
         card.style.opacity = "0";
         cardObserver.observe(card);
       });
+
+      /* ── Achievement toast system ─────────────────────────────── */
+      const achievementWrap = document.getElementById("achievement-wrap");
+      const unlockedAchievements = new Set();
+
+      const achievementDefs = [
+        {
+          id: "hero",
+          selector: ".hero-panel",
+          icon: "🎮",
+          name: "GAME STARTED",
+          desc: "Welcome, Player 1!"
+        },
+        {
+          id: "links",
+          selector: "#contact",
+          icon: "🌐",
+          name: "CONNECTED",
+          desc: "Social links discovered"
+        },
+        {
+          id: "projects",
+          selector: "#projects",
+          icon: "🗂️",
+          name: "LEVEL SELECT",
+          desc: "Project grid unlocked"
+        },
+        {
+          id: "about",
+          selector: "#about",
+          icon: "📖",
+          name: "LORE UNLOCKED",
+          desc: "Developer backstory found"
+        }
+      ];
+
+      const showAchievement = ({ icon, name, desc }) => {
+        const toast = document.createElement("div");
+        toast.className = "achievement";
+        toast.setAttribute("role", "status");
+        toast.innerHTML = `
+          <span class="achievement-icon" aria-hidden="true">${icon}</span>
+          <div class="achievement-text">
+            <span class="achievement-eyebrow">ACHIEVEMENT UNLOCKED</span>
+            <span class="achievement-name">${name}</span>
+            <span class="achievement-desc">${desc}</span>
+          </div>`;
+        achievementWrap.appendChild(toast);
+        /* Trigger slide-in on next frame */
+        requestAnimationFrame(() => requestAnimationFrame(() => toast.classList.add("show")));
+        setTimeout(() => {
+          toast.classList.remove("show");
+          setTimeout(() => toast.remove(), 500);
+        }, 4000);
+      };
+
+      const achievementObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const def = achievementDefs.find((d) => entry.target.matches(d.selector));
+          if (def && !unlockedAchievements.has(def.id)) {
+            unlockedAchievements.add(def.id);
+            /* Stagger slightly so it doesn't pop up on page load instantly */
+            setTimeout(() => showAchievement(def), def.id === "hero" ? 1200 : 300);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      achievementDefs.forEach((def) => {
+        const el = document.querySelector(def.selector);
+        if (el) achievementObserver.observe(el);
+      });
+
+      /* ── Pixel particle canvas ────────────────────────────────── */
+      (() => {
+        const canvas = document.getElementById("pixel-canvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+
+        const COLORS = ["#00e5ff", "#b56fff", "#39ff14", "#ff2d78", "#38bdf8"];
+        const PIXEL  = 2;
+        const COUNT  = 60;
+
+        let W, H, particles;
+
+        const rand  = (a, b) => Math.random() * (b - a) + a;
+        const randEl = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+        const makeParticle = () => ({
+          x:     rand(0, W),
+          y:     rand(0, H),
+          vx:    rand(-0.3, 0.3),
+          vy:    rand(-0.5, -0.08),
+          color: randEl(COLORS),
+          alpha: rand(0.15, 0.7),
+          size:  PIXEL * (Math.random() < 0.3 ? 2 : 1)
+        });
+
+        const resize = () => {
+          W = canvas.width  = window.innerWidth;
+          H = canvas.height = window.innerHeight;
+          particles = Array.from({ length: COUNT }, makeParticle);
+        };
+
+        const draw = () => {
+          ctx.clearRect(0, 0, W, H);
+          particles.forEach((p) => {
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle   = p.color;
+            ctx.fillRect(Math.round(p.x), Math.round(p.y), p.size, p.size);
+
+            p.x += p.vx;
+            p.y += p.vy;
+
+            /* Wrap around edges */
+            if (p.y < -p.size) { p.y = H + p.size; p.x = rand(0, W); }
+            if (p.x < 0)       p.x = W;
+            if (p.x > W)       p.x = 0;
+          });
+          ctx.globalAlpha = 1;
+          requestAnimationFrame(draw);
+        };
+
+        window.addEventListener("resize", resize);
+        resize();
+        draw();
+      })();
     </script>
     <footer class="site-footer">
       <div class="container footer-inner">

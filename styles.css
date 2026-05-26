@@ -17,6 +17,7 @@
   --neon-pink: #ff2d78;
   --font-display: "Orbitron", "Space Grotesk", "Segoe UI", sans-serif;
   --font-body: "Space Grotesk", Inter, "Segoe UI", Roboto, sans-serif;
+  --font-pixel: "Press Start 2P", monospace;
 }
 
 /* ─── Reset ─────────────────────────────────────────────────────── */
@@ -152,10 +153,28 @@ main {
     0deg,
     transparent,
     transparent 3px,
-    rgba(0, 0, 0, 0.08) 3px,
-    rgba(0, 0, 0, 0.08) 4px
+    rgba(0, 0, 0, 0.12) 3px,
+    rgba(0, 0, 0, 0.12) 4px
   );
   pointer-events: none;
+}
+
+/* CRT vignette overlay */
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 48%, rgba(0, 0, 0, 0.72) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Pixel canvas for drifting background particles */
+#pixel-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
 }
 
 /* ─── Layout ─────────────────────────────────────────────────────── */
@@ -827,6 +846,220 @@ main {
 
 .hero-panel { animation-delay: 0.1s; }
 
+/* ─── Game HUD — Nav Player Indicator ───────────────────────────── */
+.nav-player {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-pixel);
+  font-size: 0.48rem;
+  letter-spacing: 0.1em;
+  color: var(--neon-green);
+  white-space: nowrap;
+}
+
+.nav-player-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--neon-green);
+  box-shadow: 0 0 6px var(--neon-green), 0 0 12px var(--neon-green);
+  animation: blink 1.4s step-end infinite;
+  flex-shrink: 0;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ─── Game HUD — Hero panel header ──────────────────────────────── */
+.hud-header {
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.25rem;
+}
+
+/* ─── Game HUD — HP / XP bars ────────────────────────────────────── */
+.game-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.8rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 1.6rem 1fr 4.2rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bar-key {
+  font-family: var(--font-pixel);
+  font-size: 0.44rem;
+  letter-spacing: 0.05em;
+  text-align: right;
+}
+
+.bar-key.hp { color: #ff6b9d; }
+.bar-key.xp { color: #b56fff; }
+.bar-key.mp { color: #00e5ff; }
+
+.bar-track {
+  height: 0.55rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 1px;
+  transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 0%;
+}
+
+.hp-fill {
+  background: linear-gradient(90deg, #c0392b, #ff6b9d);
+  box-shadow: 0 0 6px rgba(255, 107, 157, 0.9);
+}
+
+.xp-fill {
+  background: linear-gradient(90deg, #6c3483, #b56fff);
+  box-shadow: 0 0 6px rgba(181, 111, 255, 0.9);
+}
+
+.mp-fill {
+  background: linear-gradient(90deg, #0055a4, #00e5ff);
+  box-shadow: 0 0 6px rgba(0, 229, 255, 0.9);
+}
+
+.bar-val {
+  font-family: var(--font-pixel);
+  font-size: 0.4rem;
+  color: var(--muted);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ─── Game HUD — Level Badge on section headings ─────────────────── */
+.level-badge {
+  display: inline-block;
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  background: rgba(0, 229, 255, 0.06);
+  border: 1px solid rgba(0, 229, 255, 0.28);
+  padding: 0.35rem 0.85rem;
+  margin-bottom: 0.6rem;
+  clip-path: polygon(0.4rem 0%, 100% 0%, calc(100% - 0.4rem) 100%, 0% 100%);
+}
+
+/* ─── Game HUD — Card level indicator ───────────────────────────── */
+.card-level {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  z-index: 3;
+  font-family: var(--font-pixel);
+  font-size: 0.44rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(0, 0, 0, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.22rem 0.5rem;
+  backdrop-filter: blur(4px);
+}
+
+/* ─── Achievement Toasts ─────────────────────────────────────────── */
+.achievement-wrap {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9990;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+  max-width: min(320px, calc(100vw - 3rem));
+}
+
+.achievement {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 1rem;
+  background: rgba(3, 7, 24, 0.97);
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 255, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(0, 229, 255, 0.1);
+  transform: translateX(calc(100% + 2rem));
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.achievement::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.04), transparent);
+  pointer-events: none;
+}
+
+.achievement.show {
+  transform: translateX(0);
+}
+
+.achievement-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.achievement-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  min-width: 0;
+}
+
+.achievement-eyebrow {
+  font-family: var(--font-pixel);
+  font-size: 0.44rem;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+}
+
+.achievement-name {
+  font-family: var(--font-pixel);
+  font-size: 0.58rem;
+  color: var(--text);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.achievement-desc {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-family: var(--font-body);
+}
+
 /* ─── Responsive ─────────────────────────────────────────────────── */
 @media (max-width: 820px) {
   .nav-wrap,
@@ -838,6 +1071,10 @@ main {
     display: grid;
     justify-content: stretch;
     padding: 0.85rem 0;
+  }
+
+  .nav-player {
+    display: none;
   }
 
   .hero {
