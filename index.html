@@ -428,6 +428,20 @@
 
         const GRID_SIZE = 18;
         const STEP_MS = 115;
+        const controls = {
+          arrowup: [0, -1],
+          w: [0, -1],
+          up: [0, -1],
+          arrowdown: [0, 1],
+          s: [0, 1],
+          down: [0, 1],
+          arrowleft: [-1, 0],
+          a: [-1, 0],
+          left: [-1, 0],
+          arrowright: [1, 0],
+          d: [1, 0],
+          right: [1, 0]
+        };
         let renderSize = 360;
         let snake = [];
         let direction = { x: 1, y: 0 };
@@ -456,7 +470,7 @@
 
         const resizeCanvas = () => {
           const dpr = window.devicePixelRatio || 1;
-          const cssSize = Math.max(220, Math.floor(canvas.clientWidth || 360));
+          const cssSize = Math.max(220, Math.floor(canvas.clientWidth || canvas.width || 360));
           renderSize = cssSize;
           canvas.width = Math.floor(cssSize * dpr);
           canvas.height = Math.floor(cssSize * dpr);
@@ -557,17 +571,7 @@
           const target = event.target;
           if (target instanceof HTMLElement && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) return;
           const key = event.key.toLowerCase();
-          const controls = {
-            arrowup: [0, -1],
-            w: [0, -1],
-            arrowdown: [0, 1],
-            s: [0, 1],
-            arrowleft: [-1, 0],
-            a: [-1, 0],
-            arrowright: [1, 0],
-            d: [1, 0]
-          };
-          if (!Object.prototype.hasOwnProperty.call(controls, key)) return;
+          if (!(key in controls)) return;
           event.preventDefault();
           const [x, y] = controls[key];
           setDirection(x, y);
@@ -575,13 +579,7 @@
 
         touchButtons.forEach((button) => {
           button.addEventListener("click", () => {
-            const map = {
-              up: [0, -1],
-              down: [0, 1],
-              left: [-1, 0],
-              right: [1, 0]
-            };
-            const pair = map[button.dataset.direction];
+            const pair = controls[button.dataset.direction];
             if (!pair) return;
             setDirection(pair[0], pair[1]);
           });
