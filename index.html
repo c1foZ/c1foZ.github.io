@@ -49,15 +49,23 @@
       <section class="hero section">
         <div class="container hero-layout">
           <div class="hero-copy">
-            <p class="eyebrow">Game Developer Portfolio</p>
-            <h1>Stylized worlds, playable prototypes, and game ideas brought to life.</h1>
-            <p class="lead">
-              Welcome to my game development portfolio! Here you’ll find a
-              collection of games I’ve created, each showcasing my skills and
-              passion for game design and programming. From 2D platformers to
-              3D obstacle courses, each project represents a step forward in my
-              journey as a developer.
-            </p>
+            <p class="eyebrow">Interactive Hero</p>
+            <h1>Catch the vibe.</h1>
+            <p class="lead">Tap or click the glowing pixel to build combo and score before time runs out.</p>
+            <div class="hero-game" id="hero-game" aria-label="Catch the vibe mini-game">
+              <div class="hero-game-hud" role="status" aria-live="polite">
+                <span>SCORE <strong id="hero-score">0</strong></span>
+                <span>COMBO <strong id="hero-combo">0</strong></span>
+                <span>TIME <strong id="hero-time">20.0s</strong></span>
+              </div>
+              <div class="hero-progress" aria-hidden="true">
+                <span id="hero-progress-fill"></span>
+              </div>
+              <div class="hero-game-arena" id="hero-game-arena">
+                <button type="button" class="vibe-target" id="vibe-target" aria-label="Start mini-game">START</button>
+              </div>
+              <p class="hero-reaction" id="hero-reaction" aria-live="polite">Hit START and keep the streak alive.</p>
+            </div>
             <div class="hero-actions">
               <a class="btn btn-primary" href="#projects">Explore Projects</a>
               <a class="btn btn-secondary" href="https://cifoz.itch.io/" target="_blank" rel="noreferrer">Visit itch.io</a>
@@ -357,6 +365,103 @@
       projects.forEach((project, i) => {
         projectGrid.appendChild(createProjectCard(project, i));
       });
+
+      /* ── Hero mini-game: Catch the vibe ───────────────────────── */
+      (() => {
+        const heroGame = document.getElementById("hero-game");
+        const arena = document.getElementById("hero-game-arena");
+        const target = document.getElementById("vibe-target");
+        const scoreEl = document.getElementById("hero-score");
+        const comboEl = document.getElementById("hero-combo");
+        const timeEl = document.getElementById("hero-time");
+        const reactionEl = document.getElementById("hero-reaction");
+        const progressFill = document.getElementById("hero-progress-fill");
+
+        if (!heroGame || !arena || !target || !scoreEl || !comboEl || !timeEl || !reactionEl || !progressFill) return;
+
+        const GAME_DURATION = 20;
+        const reactions = ["NICE!", "CLEAN!", "LOCKED IN!", "ON FIRE!", "SMOOTH!"];
+
+        let score = 0;
+        let combo = 0;
+        let endAt = 0;
+        let timer = null;
+        let running = false;
+
+        const updateHud = () => {
+          const remaining = running ? Math.max(0, (endAt - performance.now()) / 1000) : GAME_DURATION;
+          scoreEl.textContent = String(score);
+          comboEl.textContent = String(combo);
+          timeEl.textContent = `${remaining.toFixed(1)}s`;
+          progressFill.style.width = `${(remaining / GAME_DURATION) * 100}%`;
+        };
+
+        const placeTarget = () => {
+          const arenaRect = arena.getBoundingClientRect();
+          const targetRect = target.getBoundingClientRect();
+          const maxX = Math.max(0, arenaRect.width - targetRect.width - 6);
+          const maxY = Math.max(0, arenaRect.height - targetRect.height - 6);
+          const x = Math.random() * maxX;
+          const y = Math.random() * maxY;
+          target.style.left = `${x}px`;
+          target.style.top = `${y}px`;
+        };
+
+        const endGame = () => {
+          running = false;
+          clearInterval(timer);
+          timer = null;
+          reactionEl.textContent = `Time up! Final score: ${score}. Tap RETRY for another round.`;
+          target.textContent = "RETRY";
+          target.setAttribute("aria-label", "Retry mini-game");
+          target.style.left = "50%";
+          target.style.top = "50%";
+          target.classList.remove("is-active");
+          updateHud();
+        };
+
+        const startGame = () => {
+          score = 0;
+          combo = 0;
+          running = true;
+          endAt = performance.now() + GAME_DURATION * 1000;
+          target.textContent = "✦";
+          target.setAttribute("aria-label", "Catch target");
+          target.classList.add("is-active");
+          reactionEl.textContent = "Go! Keep hitting the target.";
+          placeTarget();
+          updateHud();
+          timer = setInterval(() => {
+            if (performance.now() >= endAt) {
+              endGame();
+              return;
+            }
+            updateHud();
+          }, 100);
+        };
+
+        target.addEventListener("click", (event) => {
+          event.stopPropagation();
+          if (!running) {
+            startGame();
+            return;
+          }
+          combo += 1;
+          score += 10 + Math.min(20, combo * 2);
+          reactionEl.textContent = reactions[Math.floor(Math.random() * reactions.length)];
+          updateHud();
+          placeTarget();
+        });
+
+        arena.addEventListener("click", (event) => {
+          if (!running || event.target === target) return;
+          combo = 0;
+          reactionEl.textContent = "Miss! Rebuild your combo.";
+          updateHud();
+        });
+
+        updateHud();
+      })();
 
       /* ── Custom cursor ────────────────────────────────────────── */
       const dot  = document.querySelector(".cursor-dot");
