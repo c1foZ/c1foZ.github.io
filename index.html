@@ -553,6 +553,9 @@
         };
 
         document.addEventListener("keydown", (event) => {
+          if (event.altKey || event.ctrlKey || event.metaKey) return;
+          const target = event.target;
+          if (target instanceof HTMLElement && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) return;
           const key = event.key.toLowerCase();
           const controls = {
             arrowup: [0, -1],
