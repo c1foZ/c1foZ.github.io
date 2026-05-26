@@ -1348,6 +1348,12 @@ main {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  .bar-track::after,
+  .bar-fill,
+  .bar-val {
+    animation: none !important;
+  }
 }
 
 /* ─── Focus visible accessibility ───────────────────────────────── */
