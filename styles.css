@@ -594,6 +594,36 @@ main {
   align-content: start;
 }
 
+/* ─── Player avatar ──────────────────────────────────────────────── */
+.player-avatar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.player-avatar {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  box-shadow:
+    0 0 0 4px rgba(64, 223, 255, 0.12),
+    0 0 16px rgba(64, 223, 255, 0.35),
+    0 0 32px rgba(64, 223, 255, 0.15);
+  display: block;
+  image-rendering: auto;
+}
+
+.player-avatar-label {
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  text-shadow: 0 0 8px rgba(64, 223, 255, 0.6);
+}
+
 .stat-card {
   padding: 1rem 1.2rem;
   border-radius: 0;
