@@ -159,6 +159,7 @@
             "Step into the paws of a broken cat in a world that feels out of sync. Wander through a cozy yet mysterious environment, where reality glitches and secrets lurk behind every corner.",
           playUrl: "https://cifoz.itch.io/meowfunction",
           githubUrl: "https://github.com/c1foZ/meowfunction",
+          screenshotUrl: "https://github.com/user-attachments/assets/067c54f3-3435-4f73-aebd-4497a19e2cb5",
           accent: "cyan"
         },
         {
@@ -168,6 +169,7 @@
             "Navigate challenging levels by jumping across platforms while avoiding deadly traps.",
           playUrl: "https://cifoz.itch.io/leap-quest",
           githubUrl: "https://github.com/c1foZ/leapquest",
+          screenshotUrl: "https://github.com/user-attachments/assets/1eb2024d-e64c-4999-b8ff-f8ea7239754b",
           accent: "violet"
         },
         {
@@ -177,6 +179,7 @@
             "Control a rolling ball through obstacle-filled levels, testing your reflexes and timing.",
           playUrl: "https://cifoz.itch.io/gulocka",
           githubUrl: "https://github.com/c1foZ/gulocka",
+          screenshotUrl: "https://github.com/user-attachments/assets/14497450-c0c9-46f0-bbb3-82d577702727",
           accent: "amber"
         },
         {
@@ -186,6 +189,7 @@
             "Survive waves of zombies in a fast-paced, action-packed 2D game.",
           playUrl: "https://cifoz.itch.io/zombie-onslaught",
           githubUrl: "https://github.com/c1foZ/zombieonslaught",
+          screenshotUrl: "https://github.com/user-attachments/assets/bbc4fd05-7f04-481d-9170-3ab27da7596b",
           accent: "crimson"
         },
         {
@@ -194,6 +198,7 @@
           description:
             "A terminal-based Pacman game where you navigate a maze, collect dots, and avoid enemies.",
           githubUrl: "https://github.com/c1foZ/pacman",
+          screenshotUrl: "https://github.com/user-attachments/assets/dfc8b9a3-20f8-44f5-b83d-522256cc8fed",
           accent: "gold"
         },
         {
@@ -203,6 +208,7 @@
             "Take on the role of a brave knight in this fast-paced 2D platformer! Jump over deadly traps, dodge monstrous foes, and uncover hidden secrets as you race through perilous levels.",
           playUrl: "https://cifoz.itch.io/knight-on-the-edge",
           githubUrl: "https://github.com/c1foZ/knightontheedge",
+          screenshotUrl: "https://github.com/user-attachments/assets/5903e500-f257-4916-a8de-7145720330a7",
           accent: "emerald"
         },
         {
@@ -233,17 +239,27 @@
 
         const thumbnail = document.createElement("div");
         thumbnail.className = `project-thumb accent-${project.accent}`;
-        thumbnail.setAttribute("aria-hidden", "true");
+        if (project.screenshotUrl) {
+          const thumbImage = document.createElement("img");
+          thumbImage.className = "project-thumb-image";
+          thumbImage.src = project.screenshotUrl;
+          thumbImage.alt = `${project.title} screenshot`;
+          thumbImage.loading = "lazy";
+          thumbImage.decoding = "async";
+          thumbnail.appendChild(thumbImage);
+        } else {
+          thumbnail.setAttribute("aria-hidden", "true");
 
-        const thumbText = document.createElement("span");
-        thumbText.className = "project-thumb-text";
-        thumbText.textContent = project.title.slice(0, 2).toUpperCase();
-        thumbnail.appendChild(thumbText);
+          const thumbText = document.createElement("span");
+          thumbText.className = "project-thumb-text";
+          thumbText.textContent = project.title.slice(0, 2).toUpperCase();
+          thumbnail.appendChild(thumbText);
 
-        const thumbCaption = document.createElement("span");
-        thumbCaption.className = "project-thumb-caption";
-        thumbCaption.textContent = "Screenshot placeholder";
-        thumbnail.appendChild(thumbCaption);
+          const thumbCaption = document.createElement("span");
+          thumbCaption.className = "project-thumb-caption";
+          thumbCaption.textContent = "Screenshot placeholder";
+          thumbnail.appendChild(thumbCaption);
+        }
 
         const content = document.createElement("div");
         content.className = "project-content";
