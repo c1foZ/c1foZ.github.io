@@ -1,6 +1,6 @@
-# My AI Automation Lab
+# AI Automation Game Hub
 
-Simple static landing page designed for GitHub Pages.
+Modern static portfolio/game hub designed for GitHub Pages.
 
 ## Local setup
 

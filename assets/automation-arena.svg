@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Automation Arena">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#151f38" />
+      <stop offset="100%" stop-color="#2dd4bf" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#g1)" />
+  <circle cx="520" cy="100" r="80" fill="rgba(255,255,255,0.2)" />
+  <text x="44" y="302" fill="#e2e8f0" font-size="44" font-family="Segoe UI, Arial" font-weight="700">Automation Arena</text>
+</svg>
