@@ -62,7 +62,7 @@
                 <span id="hero-progress-fill"></span>
               </div>
               <div class="hero-game-arena" id="hero-game-arena">
-                <button type="button" class="vibe-target" id="vibe-target" aria-label="Start mini-game">START</button>
+                <button type="button" class="vibe-target is-centered" id="vibe-target" aria-label="Start mini-game">START</button>
               </div>
               <p class="hero-reaction" id="hero-reaction" aria-live="polite">Hit START and keep the streak alive.</p>
             </div>
@@ -380,6 +380,10 @@
         if (!heroGame || !arena || !target || !scoreEl || !comboEl || !timeEl || !reactionEl || !progressFill) return;
 
         const GAME_DURATION = 20;
+        const PROGRESS_SCALE = 100;
+        const BASE_POINTS = 10;
+        const COMBO_MULTIPLIER = 2;
+        const MAX_COMBO_BONUS = 20;
         const reactions = ["NICE!", "CLEAN!", "LOCKED IN!", "ON FIRE!", "SMOOTH!"];
 
         let score = 0;
@@ -393,7 +397,8 @@
           scoreEl.textContent = String(score);
           comboEl.textContent = String(combo);
           timeEl.textContent = `${remaining.toFixed(1)}s`;
-          progressFill.style.width = `${(remaining / GAME_DURATION) * 100}%`;
+          const progressPercent = (remaining / GAME_DURATION) * PROGRESS_SCALE;
+          progressFill.style.width = `${progressPercent}%`;
         };
 
         const placeTarget = () => {
@@ -416,6 +421,7 @@
           target.setAttribute("aria-label", "Retry mini-game");
           target.style.left = "50%";
           target.style.top = "50%";
+          target.classList.add("is-centered");
           target.classList.remove("is-active");
           updateHud();
         };
@@ -427,6 +433,7 @@
           endAt = performance.now() + GAME_DURATION * 1000;
           target.textContent = "✦";
           target.setAttribute("aria-label", "Catch target");
+          target.classList.remove("is-centered");
           target.classList.add("is-active");
           reactionEl.textContent = "Go! Keep hitting the target.";
           placeTarget();
@@ -447,7 +454,7 @@
             return;
           }
           combo += 1;
-          score += 10 + Math.min(20, combo * 2);
+          score += BASE_POINTS + Math.min(MAX_COMBO_BONUS, combo * COMBO_MULTIPLIER);
           reactionEl.textContent = reactions[Math.floor(Math.random() * reactions.length)];
           updateHud();
           placeTarget();
