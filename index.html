@@ -10,7 +10,7 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;500;700;900&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;700&family=Press+Start+2P&family=VT323&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -276,12 +276,15 @@
         const thumbnail = document.createElement("div");
         thumbnail.className = `project-thumb accent-${project.accent}`;
         if (project.screenshotUrl) {
+          thumbnail.classList.add("is-loading");
           const thumbImage = document.createElement("img");
           thumbImage.className = "project-thumb-image";
           thumbImage.src = project.screenshotUrl;
           thumbImage.alt = `${project.title} screenshot`;
           thumbImage.loading = "lazy";
           thumbImage.decoding = "async";
+          thumbImage.addEventListener("load", () => thumbnail.classList.remove("is-loading"), { once: true });
+          thumbImage.addEventListener("error", () => thumbnail.classList.remove("is-loading"), { once: true });
           thumbnail.appendChild(thumbImage);
         } else {
           thumbnail.setAttribute("aria-hidden", "true");
