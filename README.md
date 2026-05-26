@@ -1,22 +1,26 @@
-# Game Developer Portfolio
+# 🎮 Game Developer Portfolio
 
-Modern static portfolio site designed for GitHub Pages.
+Source code for my personal portfolio website hosted on GitHub Pages.
 
-## Local setup
+## 🌐 Live Demo
 
-No build step is required.
+https://c1foz.github.io/
 
-1. Clone the repository.
-2. Open `/home/runner/work/ai-agent-test-page/ai-agent-test-page/index.html` in a browser, or serve the repository root with a simple static server.
+## 🛠 Tech Stack
 
-## GitHub Pages deployment
+- HTML
+- CSS
+- JavaScript
+- GitHub Pages
 
-Deployment is handled by `.github/workflows/deploy-pages.yml`.
+## 🚀 Run Locally
 
-- The workflow runs on pushes to `main` (and can be run manually).
-- It publishes the repository root as a GitHub Pages artifact.
+```bash
+git clone https://github.com/c1foZ/c1foZ.github.io.git
+```
 
-To enable Pages in GitHub:
+Open `index.html` in your browser.
 
-1. Open **Settings → Pages** in the repository.
-2. Set **Source** to **GitHub Actions**.
+## 📦 Deployment
+
+Automatically deployed with GitHub Actions on pushes to `main`.
