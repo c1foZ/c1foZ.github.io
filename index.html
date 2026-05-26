@@ -61,7 +61,7 @@
                 <span class="snake-state" id="snake-state">Running</span>
               </div>
               <canvas id="snake-canvas" width="360" height="360" role="img" aria-label="Playable Snake game board"></canvas>
-              <p class="snake-message" id="snake-message" role="status" aria-live="polite">Collect the glowing pixel and avoid walls or your tail.</p>
+              <p class="snake-message" id="snake-message" role="status" aria-live="polite">Collect the glowing pixel and avoid your tail.</p>
               <button class="btn btn-primary snake-restart" id="snake-restart" type="button" hidden>Restart game</button>
               <div class="snake-touch-controls" aria-label="Touch controls">
                 <button class="snake-touch-btn up" type="button" data-direction="up" aria-label="Move up">▲</button>
@@ -454,7 +454,7 @@
         const updateHUD = () => {
           if (scoreEl) scoreEl.textContent = String(score);
           if (stateEl) stateEl.textContent = gameOver ? "Game Over" : "Running";
-          if (messageEl && !gameOver) messageEl.textContent = "Collect the glowing pixel and avoid walls or your tail.";
+          if (messageEl && !gameOver) messageEl.textContent = "Collect the glowing pixel and avoid your tail.";
         };
 
         const randomFood = () => {
@@ -521,13 +521,14 @@
           if (gameOver) return;
           direction = pendingDirection;
           const nextHead = {
-            x: snake[0].x + direction.x,
-            y: snake[0].y + direction.y
+            x: (snake[0].x + direction.x + GRID_SIZE) % GRID_SIZE,
+            y: (snake[0].y + direction.y + GRID_SIZE) % GRID_SIZE
           };
 
-          const hitWall = nextHead.x < 0 || nextHead.x >= GRID_SIZE || nextHead.y < 0 || nextHead.y >= GRID_SIZE;
-          const hitSelf = snake.some((segment) => segment.x === nextHead.x && segment.y === nextHead.y);
-          if (hitWall || hitSelf) {
+          const willGrow = nextHead.x === food.x && nextHead.y === food.y;
+          const collisionBody = willGrow ? snake : snake.slice(0, -1);
+          const hitSelf = collisionBody.some((segment) => segment.x === nextHead.x && segment.y === nextHead.y);
+          if (hitSelf) {
             gameOver = true;
             if (messageEl) messageEl.textContent = `Game over. Final score: ${score}.`;
             if (restartBtn) restartBtn.hidden = false;
@@ -537,7 +538,7 @@
           }
 
           snake.unshift(nextHead);
-          if (nextHead.x === food.x && nextHead.y === food.y) {
+          if (willGrow) {
             score += 1;
             randomFood();
             updateHUD();
