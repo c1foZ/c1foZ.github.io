@@ -1,13 +1,13 @@
-# AI Automation Game Hub
+# Game Developer Portfolio
 
-Modern static portfolio/game hub designed for GitHub Pages.
+Modern static portfolio site designed for GitHub Pages.
 
 ## Local setup
 
 No build step is required.
 
 1. Clone the repository.
-2. Open `/home/runner/work/ai-agent-test-page/ai-agent-test-page/index.html` in a browser.
+2. Open `/home/runner/work/ai-agent-test-page/ai-agent-test-page/index.html` in a browser, or serve the repository root with a simple static server.
 
 ## GitHub Pages deployment
 

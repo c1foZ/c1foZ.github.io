@@ -3,22 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Automation Game Hub</title>
+    <title>Tomáš Ferenčík | Game Developer Portfolio</title>
+    <meta
+      name="description"
+      content="Game developer portfolio for Tomáš Ferenčík featuring playable indie projects built with Godot, Unity, Phaser, Unreal Engine, and C#."
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="bg-glow bg-glow-a" aria-hidden="true"></div>
-    <div class="bg-glow bg-glow-b" aria-hidden="true"></div>
+    <div class="background">
+      <div class="aurora aurora-a" aria-hidden="true"></div>
+      <div class="aurora aurora-b" aria-hidden="true"></div>
+      <div class="grid-overlay" aria-hidden="true"></div>
+    </div>
 
     <header class="site-header">
       <div class="container nav-wrap">
-        <a class="brand" href="#home">AI Automation Lab</a>
+        <a class="brand" href="#home">Tomáš Ferenčík</a>
         <nav aria-label="Primary navigation">
           <ul class="nav-links">
-            <li><a href="#games">Games</a></li>
             <li><a href="#projects">Projects</a></li>
             <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#contact">Links</a></li>
           </ul>
         </nav>
       </div>
@@ -26,77 +32,63 @@
 
     <main id="home">
       <section class="hero section">
-        <div class="container hero-inner">
-          <p class="eyebrow">Portfolio + Game Hub</p>
-          <h1>Interactive AI experiments with modern, playable prototypes.</h1>
-          <p class="hero-copy">
-            Explore featured games, automation demos, and practical projects built
-            to test new AI-assisted workflows.
-          </p>
-          <a class="btn btn-primary" href="#games">Explore Featured Games</a>
+        <div class="container hero-layout">
+          <div class="hero-copy">
+            <p class="eyebrow">Game Developer Portfolio</p>
+            <h1>Stylized worlds, playable prototypes, and game ideas brought to life.</h1>
+            <p class="lead">
+              Welcome to my game development portfolio! Here you’ll find a
+              collection of games I’ve created, each showcasing my skills and
+              passion for game design and programming. From 2D platformers to
+              3D obstacle courses, each project represents a step forward in my
+              journey as a developer.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#projects">Explore Projects</a>
+              <a class="btn btn-secondary" href="https://cifoz.itch.io/" target="_blank" rel="noreferrer">Visit itch.io</a>
+            </div>
+          </div>
+
+          <aside class="hero-panel" aria-label="Portfolio highlights">
+            <div class="stat-card">
+              <span class="stat-value">8</span>
+              <span class="stat-label">Featured projects</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value">5+</span>
+              <span class="stat-label">Engines & tech stacks</span>
+            </div>
+            <p class="hero-note">
+              Most of the games are playable in your browser. Don’t forget to
+              check them out on itch.io for more details and screenshots.
+            </p>
+          </aside>
         </div>
       </section>
 
-      <section id="games" class="section">
+      <section id="contact" class="section">
         <div class="container">
           <div class="section-heading">
-            <h2>Featured Games</h2>
-            <p>Drop-in card layout so new games can be added quickly.</p>
+            <h2>Connect</h2>
+            <p>Find my work, releases, and contact details across the web.</p>
           </div>
-          <div class="card-grid">
-            <article class="hub-card">
-              <img
-                class="card-thumb"
-                src="assets/automation-arena.svg"
-                alt="Automation Arena thumbnail"
-              />
-              <div class="card-content">
-                <h3>Automation Arena</h3>
-                <p>Plan and chain automation actions to beat timed objectives.</p>
-                <ul class="tag-list" aria-label="Automation Arena tags">
-                  <li>Strategy</li>
-                  <li>AI</li>
-                  <li>Browser</li>
-                </ul>
-                <a class="btn" href="#" aria-label="Play Automation Arena">Play</a>
-              </div>
-            </article>
-
-            <article class="hub-card">
-              <img
-                class="card-thumb"
-                src="assets/prompt-runner.svg"
-                alt="Prompt Runner thumbnail"
-              />
-              <div class="card-content">
-                <h3>Prompt Runner</h3>
-                <p>Race through puzzle prompts with fast decision checkpoints.</p>
-                <ul class="tag-list" aria-label="Prompt Runner tags">
-                  <li>Puzzle</li>
-                  <li>Prompting</li>
-                  <li>Experimental</li>
-                </ul>
-                <a class="btn" href="#" aria-label="Play Prompt Runner">Play</a>
-              </div>
-            </article>
-
-            <article class="hub-card">
-              <img
-                class="card-thumb"
-                src="assets/agent-ops-sim.svg"
-                alt="Agent Ops Sim thumbnail"
-              />
-              <div class="card-content">
-                <h3>Agent Ops Sim</h3>
-                <p>Manage virtual agents and optimize throughput under pressure.</p>
-                <ul class="tag-list" aria-label="Agent Ops Sim tags">
-                  <li>Simulation</li>
-                  <li>Ops</li>
-                  <li>Management</li>
-                </ul>
-                <a class="btn" href="#" aria-label="Play Agent Ops Sim">Play</a>
-              </div>
-            </article>
+          <div class="social-grid">
+            <a class="social-card" href="https://www.linkedin.com/in/tomas-ferencik/" target="_blank" rel="noreferrer">
+              <span class="social-label">LinkedIn</span>
+              <span class="social-hint">Professional profile</span>
+            </a>
+            <a class="social-card" href="https://cifoz.itch.io/" target="_blank" rel="noreferrer">
+              <span class="social-label">itch.io</span>
+              <span class="social-hint">Playable builds & jam entries</span>
+            </a>
+            <a class="social-card" href="https://github.com/c1foZ" target="_blank" rel="noreferrer">
+              <span class="social-label">GitHub</span>
+              <span class="social-hint">Repositories & source code</span>
+            </a>
+            <a class="social-card" href="mailto:tomife2@gmail.com">
+              <span class="social-label">Email</span>
+              <span class="social-hint">tomife2@gmail.com</span>
+            </a>
           </div>
         </div>
       </section>
@@ -104,69 +96,167 @@
       <section id="projects" class="section">
         <div class="container">
           <div class="section-heading">
-            <h2>Projects</h2>
-            <p>Recent tools and experiments from the lab.</p>
+            <h2>Featured Projects</h2>
+            <p>Modern game cards generated from reusable project data.</p>
           </div>
-          <div class="card-grid">
-            <article class="hub-card">
-              <img
-                class="card-thumb"
-                src="assets/workflow-composer.svg"
-                alt="Workflow Composer project thumbnail"
-              />
-              <div class="card-content">
-                <h3>Workflow Composer</h3>
-                <p>Prototype toolkit for chaining reusable prompt workflows.</p>
-                <ul class="tag-list" aria-label="Workflow Composer tags">
-                  <li>Tooling</li>
-                  <li>Automation</li>
-                  <li>Open Source</li>
-                </ul>
-                <a class="btn" href="#" aria-label="View Workflow Composer">View</a>
-              </div>
-            </article>
-
-            <article class="hub-card">
-              <img
-                class="card-thumb"
-                src="assets/agent-playbooks.svg"
-                alt="Agent Playbooks project thumbnail"
-              />
-              <div class="card-content">
-                <h3>Agent Playbooks</h3>
-                <p>Reference collection of practical AI-assisted operations.</p>
-                <ul class="tag-list" aria-label="Agent Playbooks tags">
-                  <li>Documentation</li>
-                  <li>Playbooks</li>
-                  <li>Ops</li>
-                </ul>
-                <a class="btn" href="#" aria-label="View Agent Playbooks">View</a>
-              </div>
-            </article>
-          </div>
+          <div class="project-grid" id="project-grid" aria-live="polite"></div>
         </div>
       </section>
 
       <section id="about" class="section">
-        <div class="container panel">
-          <h2>About</h2>
-          <p>
-            This hub showcases game-like AI experiments and practical projects
-            focused on automation, interaction design, and rapid prototyping.
-          </p>
-        </div>
-      </section>
-
-      <section id="contact" class="section">
-        <div class="container panel">
-          <h2>Contact & Links</h2>
-          <p>
-            Follow updates and reach out via
-            <a href="https://github.com/c1foZ">GitHub</a> or open an issue in this
-            repository.
-          </p>
+        <div class="container">
+          <div class="about-panel">
+            <div>
+              <p class="eyebrow">About the portfolio</p>
+              <h2>Building interactive experiences across genres.</h2>
+            </div>
+            <p>
+              From exploration games and platformers to survival experiences and
+              experimental prototypes, I enjoy shaping mechanics, atmosphere,
+              and feel into projects that are fun to explore and refine.
+            </p>
+          </div>
         </div>
       </section>
     </main>
+
+    <script>
+      const projects = [
+        {
+          title: "Meowfunction",
+          tags: ["Exploration", "Godot"],
+          description:
+            "Step into the paws of a broken cat in a world that feels out of sync. Wander through a cozy yet mysterious environment, where reality glitches and secrets lurk behind every corner.",
+          playUrl: "https://cifoz.itch.io/meowfunction",
+          githubUrl: "https://github.com/c1foZ/meowfunction",
+          accent: "cyan"
+        },
+        {
+          title: "Leap Quest",
+          tags: ["Platformer", "Unity", "Mobile"],
+          description:
+            "Navigate challenging levels by jumping across platforms while avoiding deadly traps.",
+          playUrl: "https://cifoz.itch.io/leap-quest",
+          githubUrl: "https://github.com/c1foZ/leapquest",
+          accent: "violet"
+        },
+        {
+          title: "Guľôčka",
+          tags: ["3D Obstacle Game", "Unity"],
+          description:
+            "Control a rolling ball through obstacle-filled levels, testing your reflexes and timing.",
+          playUrl: "https://cifoz.itch.io/gulocka",
+          githubUrl: "https://github.com/c1foZ/gulocka",
+          accent: "amber"
+        },
+        {
+          title: "Zombie Onslaught",
+          tags: ["Survival Game", "Unity"],
+          description:
+            "Survive waves of zombies in a fast-paced, action-packed 2D game.",
+          playUrl: "https://cifoz.itch.io/zombie-onslaught",
+          githubUrl: "https://github.com/c1foZ/zombieonslaught",
+          accent: "crimson"
+        },
+        {
+          title: "Pacman!",
+          tags: ["Classic Arcade Game", "C#"],
+          description:
+            "A terminal-based Pacman game where you navigate a maze, collect dots, and avoid enemies.",
+          githubUrl: "https://github.com/c1foZ/pacman",
+          accent: "gold"
+        },
+        {
+          title: "Knight on the Edge",
+          tags: ["Platformer", "Godot"],
+          description:
+            "Take on the role of a brave knight in this fast-paced 2D platformer! Jump over deadly traps, dodge monstrous foes, and uncover hidden secrets as you race through perilous levels.",
+          playUrl: "https://cifoz.itch.io/knight-on-the-edge",
+          githubUrl: "https://github.com/c1foZ/knightontheedge",
+          accent: "emerald"
+        },
+        {
+          title: "Nightborne",
+          tags: ["Dungeon Crawler", "Phaser"],
+          description:
+            "Nightborne is a 2D platformer set in a dark dungeon. Players fight waves of skeleton enemies, explore eerie corridors, and uncover secrets.",
+          playUrl: "https://cifoz.itch.io/nightborne",
+          githubUrl: "https://github.com/c1foZ/nightborne",
+          accent: "purple"
+        },
+        {
+          title: "Echoes of the Peak",
+          tags: ["Walking Simulator", "Unreal Engine"],
+          description:
+            "Lost in the heart of majestic mountains, you wander through breathtaking landscapes. A peaceful lake and a towering hill beckon you to uncover their mysteries.",
+          githubUrl: "https://github.com/c1foZ/echoesofthepeak",
+          accent: "sky"
+        }
+      ];
+
+      const projectGrid = document.getElementById("project-grid");
+
+      const createProjectCard = (project) => {
+        const card = document.createElement("article");
+        card.className = "project-card";
+
+        const thumbnail = document.createElement("div");
+        thumbnail.className = `project-thumb accent-${project.accent}`;
+        thumbnail.setAttribute("aria-hidden", "true");
+
+        const thumbText = document.createElement("span");
+        thumbText.className = "project-thumb-text";
+        thumbText.textContent = project.title.slice(0, 2).toUpperCase();
+        thumbnail.appendChild(thumbText);
+
+        const content = document.createElement("div");
+        content.className = "project-content";
+
+        const title = document.createElement("h3");
+        title.textContent = project.title;
+
+        const tags = document.createElement("ul");
+        tags.className = "tag-list";
+        tags.setAttribute("aria-label", `${project.title} tags`);
+
+        project.tags.forEach((tag) => {
+          const item = document.createElement("li");
+          item.textContent = tag;
+          tags.appendChild(item);
+        });
+
+        const description = document.createElement("p");
+        description.textContent = project.description;
+
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+
+        if (project.playUrl) {
+          const playLink = document.createElement("a");
+          playLink.className = "btn btn-primary";
+          playLink.href = project.playUrl;
+          playLink.target = "_blank";
+          playLink.rel = "noreferrer";
+          playLink.textContent = "Play";
+          actions.appendChild(playLink);
+        }
+
+        const githubLink = document.createElement("a");
+        githubLink.className = "btn btn-secondary";
+        githubLink.href = project.githubUrl;
+        githubLink.target = "_blank";
+        githubLink.rel = "noreferrer";
+        githubLink.textContent = "GitHub";
+        actions.appendChild(githubLink);
+
+        content.append(title, tags, description, actions);
+        card.append(thumbnail, content);
+        return card;
+      };
+
+      projects.forEach((project) => {
+        projectGrid.appendChild(createProjectCard(project));
+      });
+    </script>
   </body>
 </html>
