@@ -626,6 +626,81 @@ main {
   text-shadow: 0 0 8px rgba(64, 223, 255, 0.6);
 }
 
+.player-live {
+  width: min(100%, 22rem);
+  padding: 0.7rem 0.8rem;
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  background: rgba(4, 10, 28, 0.7);
+  text-align: left;
+}
+
+.live-line {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.65rem;
+  font-family: var(--font-pixel);
+  font-size: 0.44rem;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+}
+
+.live-line + .live-line {
+  margin-top: 0.35rem;
+}
+
+.live-key {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.live-line strong {
+  color: #9dff66;
+  font-weight: 600;
+  text-align: right;
+}
+
+.live-sync {
+  margin: 0.45rem 0 0;
+  font-size: 0.42rem;
+  color: var(--muted);
+  font-family: var(--font-pixel);
+  letter-spacing: 0.06em;
+}
+
+.live-sync.is-ok {
+  color: #7bffbb;
+}
+
+.live-sync.is-error {
+  color: #ff94c2;
+}
+
+.player-rank {
+  width: min(100%, 22rem);
+  display: grid;
+  gap: 0.2rem;
+  text-align: center;
+  border: 1px solid rgba(0, 229, 255, 0.18);
+  background: rgba(0, 229, 255, 0.05);
+  padding: 0.65rem 0.75rem;
+}
+
+.rank-level {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-shadow: 0 0 16px rgba(0, 229, 255, 0.45);
+}
+
+.rank-title {
+  font-family: var(--font-pixel);
+  font-size: 0.48rem;
+  letter-spacing: 0.1em;
+  color: #d8ecff;
+}
+
 .stat-card {
   width: 100%;
   padding: 1rem 1.2rem;
@@ -679,6 +754,52 @@ main {
   gap: 0.7rem;
   width: min(100%, 22rem);
   margin-inline: auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.player-loadout {
+  width: min(100%, 22rem);
+  display: grid;
+  gap: 0.45rem;
+  text-align: left;
+}
+
+.player-section-title {
+  margin-top: 0.2rem;
+  font-family: var(--font-pixel);
+  font-size: 0.46rem;
+  letter-spacing: 0.11em;
+  color: var(--accent);
+}
+
+.badge-list,
+.stack-list,
+.quest-log {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.badge-list li,
+.stack-list li,
+.quest-log li {
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  background: rgba(0, 229, 255, 0.04);
+  padding: 0.4rem 0.55rem;
+  font-size: 0.76rem;
+  color: var(--text);
+}
+
+.badge-list li {
+  font-family: var(--font-pixel);
+  font-size: 0.46rem;
+  letter-spacing: 0.06em;
+}
+
+.quest-log li.done {
+  color: #87ffb4;
 }
 
 /* ─── Section headings ───────────────────────────────────────────── */
@@ -1110,11 +1231,14 @@ main {
   transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
   width: 0%;
   animation: stat-fill-pulse 2.2s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
 }
 
 .hp-fill {
   background: linear-gradient(90deg, #c0392b, #ff6b9d);
   box-shadow: 0 0 6px rgba(255, 107, 157, 0.9);
+  animation: stat-fill-pulse 2.2s ease-in-out infinite, hp-pulse 1.9s ease-in-out infinite;
 }
 
 .xp-fill {
@@ -1127,6 +1251,15 @@ main {
   box-shadow: 0 0 6px rgba(0, 229, 255, 0.9);
 }
 
+.mp-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.35) 45%, transparent 100%);
+  transform: translateX(-100%);
+  animation: mp-shimmer 1.8s linear infinite;
+}
+
 .bar-val {
   font-family: var(--font-pixel);
   font-size: 0.4rem;
@@ -1134,6 +1267,16 @@ main {
   text-align: right;
   white-space: nowrap;
   animation: stat-text-pulse 2.2s ease-in-out infinite;
+}
+
+.game-bars:hover .bar-fill,
+.game-bars:focus-within .bar-fill {
+  filter: brightness(1.2);
+}
+
+.game-bars:hover .bar-track,
+.game-bars:focus-within .bar-track {
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.16);
 }
 
 @keyframes stat-scan {
@@ -1154,6 +1297,17 @@ main {
 @keyframes stat-text-pulse {
   0%, 100% {
     opacity: 0.8;
+  }
+
+  @keyframes hp-pulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(255, 107, 157, 0.7); }
+    50% { box-shadow: 0 0 13px rgba(255, 107, 157, 1); }
+  }
+
+  @keyframes mp-shimmer {
+    to {
+      transform: translateX(100%);
+    }
   }
   50% {
     opacity: 1;
@@ -1336,6 +1490,20 @@ main {
 
   .tag-list li {
     border-radius: 0;
+  }
+
+  .player-stats-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .live-line {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+  }
+
+  .live-line strong {
+    text-align: left;
   }
 }
 
